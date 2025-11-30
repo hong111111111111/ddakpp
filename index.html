@@ -9,6 +9,7 @@
     body {
         font-family: Arial, sans-serif;
         margin: 20px;
+        /* background-color: #f0f2f5;  <- 삭제 또는 주석 처리 */
         text-align: center;
 
         /* --- 배경 이미지 설정 시작 --- */
@@ -79,13 +80,13 @@
         animation: flash 0.5s;
     }
     
-    /* 복사 알림 메시지 스타일 - 수정된 부분 */
+    /* 복사 알림 메시지 스타일 */
     #notification {
         position: fixed;
         top: 20px;
         left: 50%;
         transform: translateX(-50%);
-        background-color: #1a1a1a; /* 어두운 배경 */
+        background-color: #333;
         color: white;
         padding: 10px 20px;
         border-radius: 5px;
@@ -157,15 +158,15 @@
                 // 2. 시각적 피드백 (말풍선 테두리 변경 및 애니메이션)
                 element.classList.add('copied');
                 
-                // 3. 복사 완료 알림 표시 - 수정된 부분
+                // 3. 복사 완료 알림 표시
                 notification.style.opacity = 1;
-                notification.textContent = "복사되었습니다. 이제 사랑하는 사람에게 보내 보세요 :)";
+                notification.textContent = "'" + textToCopy.substring(0, 15) + "...'가 복사되었습니다!";
 
-                // 4. 일정 시간 후 원상 복구 - 노출 시간 2.5초로 연장
+                // 4. 일정 시간 후 원상 복구
                 setTimeout(() => {
                     element.classList.remove('copied');
                     notification.style.opacity = 0;
-                }, 2500); // 2.5초 후에 원래대로 돌아가기
+                }, 1000); // 1초 후에 원래대로 돌아가기
                 
             }).catch(err => {
                 console.error('클립보드 복사 실패:', err);
@@ -175,4 +176,4 @@
     </script>
 
 </body>
-</html>
+</html> 
