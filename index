@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>텍스트 복사 및 공유 페이지</title>
+    <style>
+        /* 기본 스타일 */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f0f2f5;
+            text-align: center;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 30px;
+        }
+
+        /* 텍스트 컨테이너 스타일 */
+        .text-container {
+            max-width: 600px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px; /* 항목 간 간격 */
+        }
+
+        /* 말풍선 디자인 스타일 */
+        .speech-bubble {
+            background-color: #ffffff; /* 말풍선 배경색 */
+            padding: 15px 20px;
+            border-radius: 20px; /* 둥근 모서리 */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            text-align: left;
+            cursor: pointer; /* 클릭 가능한 모양 */
+            transition: transform 0.1s ease-in-out, box-shadow 0.1s ease-in-out;
+            position: relative;
+            border: 1px solid #ddd;
+        }
+
+        /* 말풍선 꼬리 (선택 사항 - 오른쪽 아래에 꼬리 추가) */
+        .speech-bubble::after {
+            content: '';
+            position: absolute;
+            bottom: -8px; /* 말풍선 아래쪽으로 */
+            right: 20px;
+            width: 0;
+            height: 0;
+            border: 10px solid transparent;
+            border-top-color: #ffffff; /* 꼬리 색상 */
+            border-bottom: 0;
+        }
+
+        /* 호버 및 클릭 효과 */
+        .speech-bubble:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        /* 복사 완료 시 시각적 피드백 */
+        .copied {
+            border: 2px solid #4CAF50 !important; /* 복사되면 초록색 테두리 */
+            animation: flash 0.5s;
+        }
+        
+        /* 복사 알림 메시지 스타일 */
+        #notification {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #333;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+            z-index: 1000;
+        }
+
+        /* 복사 완료 애니메이션 */
+        @keyframes flash {
+            0% { background-color: #ffffff; }
+            50% { background-color: #e6ffe6; } /* 복사 시 밝은 초록색 */
+            100% { background-color: #ffffff; }
+        }
+    </style>
+</head>
+<body>
+
+    <h1>💌 초대 메시지 선택 후 복사</h1>
+    <p>원하는 메시지를 **클릭**하면 바로 복사됩니다. 메신저에 붙여넣으세요.</p>
+    
+    <div class="text-container">
+        <div class="speech-bubble" onclick="copyText(this)">
+            따뜻한크리스마스프로젝트예배 초대 1
+        </div>
+        <div class="speech-bubble" onclick="copyText(this)">
+            따뜻한크리스마스프로젝트예배 초대 2
+        </div>
+        <div class="speech-bubble" onclick="copyText(this)">
+            따뜻한크리스마스프로젝트예배 초대 3
+        </div>
+        <div class="speech-bubble" onclick="copyText(this)">
+            따뜻한크리스마스프로젝트예배 초대 4
+        </div>
+        <div class="speech-bubble" onclick="copyText(this)">
+            따뜻한크리스마스프로젝트예배 초대 5
+        </div>
+        <div class="speech-bubble" onclick="copyText(this)">
+            따뜻한크리스마스프로젝트예배 초대 6
+        </div>
+        <div class="speech-bubble" onclick="copyText(this)">
+            따뜻한크리스마스프로젝트예배 초대 7
+        </div>
+        <div class="speech-bubble" onclick="copyText(this)">
+            따뜻한크리스마스프로젝트예배 초대 8
+        </div>
+        <div class="speech-bubble" onclick="copyText(this)">
+            따뜻한크리스마스프로젝트예배 초대 9
+        </div>
+        <div class="speech-bubble" onclick="copyText(this)">
+            따뜻한크리스마스프로젝트예배 초대 10
+        </div>
+        </div>
+    
+    <div id="notification">텍스트가 복사되었습니다!</div>
+
+    <script>
+        function copyText(element) {
+            const textToCopy = element.textContent.trim();
+            const notification = document.getElementById('notification');
+            
+            // 1. 클립보드에 복사
+            navigator.clipboard.writeText(textToCopy).then(() => {
+                
+                // 2. 시각적 피드백 (말풍선 테두리 변경 및 애니메이션)
+                element.classList.add('copied');
+                
+                // 3. 복사 완료 알림 표시
+                notification.style.opacity = 1;
+                notification.textContent = "'" + textToCopy.substring(0, 15) + "...'가 복사되었습니다!";
+
+                // 4. 일정 시간 후 원상 복구
+                setTimeout(() => {
+                    element.classList.remove('copied');
+                    notification.style.opacity = 0;
+                }, 1000); // 1초 후에 원래대로 돌아가기
+                
+            }).catch(err => {
+                console.error('클립보드 복사 실패:', err);
+                alert('자동 복사에 실패했습니다. 텍스트를 수동으로 복사해주세요: ' + textToCopy);
+            });
+        }
+    </script>
+
+</body>
+</html>
